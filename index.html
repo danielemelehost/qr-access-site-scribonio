@@ -1,26 +1,53 @@
+<!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Accesso Serratura</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accesso alla Porta</title>
 </head>
 <body>
-    <h2>Inserisci il PIN per sbloccare</h2>
+    <h1>Inserisci il PIN per sbloccare la porta</h1>
+    
     <form id="pinForm">
-        <input type="text" id="pin" placeholder="Inserisci PIN" required>
-        <button type="submit">Accedi</button>
+        <label for="pin">PIN:</label>
+        <input type="password" id="pin" name="pin" required>
+        <button type="submit">Sblocca Porta</button>
     </form>
 
+    <div id="message"></div>
+
     <script>
-        document.getElementById('pinForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const pin = document.getElementById('pin').value;
-            if(pin === '1234') { // Cambia il PIN con quello che desideri
-                alert('PIN corretto! Sblocco serratura...');
-                // Invia il comando Webhook qui
+        document.getElementById('pinForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var pin = document.getElementById('pin').value;
+
+            // Verifica che il PIN inserito sia corretto (esempio con un PIN fisso)
+            var corretto = "1234"; // Modifica con il PIN che vuoi utilizzare
+            if (pin === corretto) {
+                sbloccaPorta();
             } else {
-                alert('PIN errato');
+                document.getElementById('message').innerText = 'PIN errato. Riprova.';
             }
         });
+
+        function sbloccaPorta() {
+            // Il link Webhook che hai ottenuto da IFTTT o SmartThings
+            var webhookUrl = "https://maker.ifttt.com/trigger/tuo_evento/with/key/la_tua_chiave";
+
+            fetch(webhookUrl, {
+                method: 'GET',  // Usa 'GET' o 'POST' a seconda della configurazione
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('message').innerText = 'Porta sbloccata con successo!';
+                } else {
+                    document.getElementById('message').innerText = 'Errore nel sbloccare la porta.';
+                }
+            })
+            .catch(error => {
+                document.getElementById('message').innerText = 'Errore di connessione.';
+            });
+        }
     </script>
 </body>
 </html>
