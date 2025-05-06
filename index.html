@@ -69,7 +69,7 @@
     <div class="container">
         <!-- Logo Airbnb -->
         <img src="https://www.theriver.asia/wp-content/uploads/2020/01/pngkey.com-airbnb-logo-png-605967.png" alt="Airbnb Logo" class="logo">
-        <h2>Inserisci il PIN per sbloccare la porta.<br>Enter the PIN to unlock the door.</h2>
+        <h2>Inserisci il PIN per sbloccare la porta<br>Enter the PIN to unlock the door</h2>
         <form id="unlockForm">
             <input type="password" id="pin" name="pin" maxlength="4" required placeholder="PIN a 4 cifre / 4-digit PIN">
             <button type="submit">Sblocca / Unlock</button>
@@ -78,15 +78,23 @@
     </div>
 
     <script>
+        let isRequestSent = false; // Flag to track if request has already been sent
+
         document.getElementById('unlockForm').addEventListener('submit', function(e) {
             e.preventDefault();
+
+            // Check if the request has already been sent
+            if (isRequestSent) {
+                return;
+            }
+
             const pin = document.getElementById('pin').value;
             const statusElement = document.getElementById('status');
 
             // Verifica che il PIN sia corretto
             if (pin === "1234") { // Modifica con il tuo PIN
                 // Messaggio di successo
-                statusElement.innerHTML = "Sto aprendo la porta...<br>Unlocking the door...";
+                statusElement.innerHTML = "La porta è stata sbloccata!<br>The door has been unlocked!";
                 statusElement.classList.remove("error");
                 statusElement.classList.add("success");
 
@@ -101,9 +109,12 @@
                         // Se c'è un errore nel fetch, lo mostriamo
                         console.error('Errore nel fetch:', error);
                     });
+
+                // Set the flag to prevent another request
+                isRequestSent = true;
             } else {
                 // Messaggio di errore
-                statusElement.innerHTML = "PIN errato.<br>Incorrect PIN.";
+                statusElement.innerHTML = "PIN errato!<br>Incorrect PIN!";
                 statusElement.classList.remove("success");
                 statusElement.classList.add("error");
             }
