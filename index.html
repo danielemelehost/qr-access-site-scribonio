@@ -52,6 +52,17 @@
             width: 120px;
             margin-bottom: 20px;
         }
+        .status {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
     </style>
 </head>
 <body>
@@ -63,31 +74,46 @@
             <input type="password" id="pin" name="pin" maxlength="4" required placeholder="PIN a 4 cifre">
             <button type="submit">Sblocca</button>
         </form>
+        <div id="status" class="status"></div>
     </div>
 
     <script>
         document.getElementById('unlockForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const pin = document.getElementById('pin').value;
+            const statusElement = document.getElementById('status');
 
             // Verifica che il PIN sia corretto
             if (pin === "1234") { // Modifica con il tuo PIN
-                alert("Sto aprendo la porta...");
+                statusElement.textContent = "Sto aprendo la porta...";
+                statusElement.classList.remove("error");
+                statusElement.classList.add("success");
 
+                // Chiamata API per sbloccare la porta
                 fetch('https://maker.ifttt.com/trigger/unlock_main_door/with/key/m1IxB-SkNNFv4ocbMjbrfJ0f_lLIPwLKRMGPesGG6xh')
-                    .then(response => response.json()) // Assicurati di interpretare la risposta come JSON
-                    .then(data => {
-                        if (data && data.success) { // Assicurati che la risposta contenga un campo di successo
-                            alert("Porta sbloccata!");
+                    .then(response => {
+                        if (response.ok) {
+                            // Porta sbloccata con successo
+                            statusElement.textContent = "La porta è stata sbloccata!";
+                            statusElement.classList.remove("error");
+                            statusElement.classList.add("success");
                         } else {
-                            alert("Errore nel sbloccare la porta");
+                            // Se ci sono problemi con la chiamata API
+                            statusElement.textContent = "Errore nel sbloccare la porta.";
+                            statusElement.classList.remove("success");
+                            statusElement.classList.add("error");
                         }
                     })
-                    .catch(error => {
-                        alert("Errore nel sbloccare la porta: " + error);
+                    .catch(() => {
+                        // Se c'è un errore nel fetch
+                        statusElement.textContent = "Errore nel sbloccare la porta.";
+                        statusElement.classList.remove("success");
+                        statusElement.classList.add("error");
                     });
             } else {
-                alert("PIN errato!");
+                statusElement.textContent = "PIN errato!";
+                statusElement.classList.remove("success");
+                statusElement.classList.add("error");
             }
         });
     </script>
