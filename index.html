@@ -3,51 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accesso alla Porta</title>
+    <title>Sblocca la Porta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 1.2em;
+            color: #555;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2em;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2em;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Inserisci il PIN per sbloccare la porta</h1>
-    
-    <form id="pinForm">
-        <label for="pin">PIN:</label>
-        <input type="password" id="pin" name="pin" required>
-        <button type="submit">Sblocca Porta</button>
-    </form>
 
-    <div id="message"></div>
+    <div class="container">
+        <h1>Sblocca la Porta</h1>
+        <form id="unlock-form">
+            <label for="pin">Inserisci il PIN per sbloccare la porta:</label>
+            <input type="password" id="pin" name="pin" placeholder="PIN a 4 cifre" required>
+            <input type="submit" value="Sblocca">
+            <div class="error" id="error-message" style="display:none;">PIN errato. Riprova.</div>
+        </form>
+    </div>
 
     <script>
-        document.getElementById('pinForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            var pin = document.getElementById('pin').value;
+        const form = document.getElementById('unlock-form');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const pin = document.getElementById('pin').value;
 
-            // Verifica che il PIN inserito sia corretto (esempio con un PIN fisso)
-            var corretto = "1234"; // Modifica con il PIN che vuoi utilizzare
-            if (pin === corretto) {
-                sbloccaPorta();
+            // Verifica PIN
+            if (pin === '1234') { // Cambia con il PIN reale
+                fetch('https://maker.ifttt.com/trigger/unlock_main_door/with/key/m1IxB-SkNNFv4ocbMjbrfJ0f_lLIPwLKRMGPesGG6xh', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ value1: pin })
+                })
+                .then(response => response.json())
+                .then(data => alert('Porta sbloccata con successo!'))
+                .catch(error => alert('Si è verificato un errore.'));
             } else {
-                document.getElementById('message').innerText = 'PIN errato. Riprova.';
+                document.getElementById('error-message').style.display = 'block';
             }
         });
-
-        function sbloccaPorta() {
-            // Il link Webhook che hai ottenuto da IFTTT o SmartThings
-            var webhookUrl = "https://maker.ifttt.com/trigger/unlock_main_door/with/key/m1IxB-SkNNFv4ocbMjbrfJ0f_lLIPwLKRMGPesGG6xh";
-
-            fetch(webhookUrl, {
-                method: 'GET',  // Usa 'GET' o 'POST' a seconda della configurazione
-            })
-            .then(response => {
-                if (response.ok) {
-                    document.getElementById('message').innerText = 'Porta sbloccata con successo!';
-                } else {
-                    document.getElementById('message').innerText = 'Errore nel sbloccare la porta.';
-                }
-            })
-            .catch(error => {
-                document.getElementById('message').innerText = 'OPEN';
-            });
-        }
     </script>
+
 </body>
 </html>
