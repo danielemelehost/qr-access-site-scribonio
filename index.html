@@ -90,8 +90,17 @@
                 statusElement.classList.remove("error");
                 statusElement.classList.add("success");
 
-                // Esegui il webhook per aprire la porta
-                window.location.href = 'https://maker.ifttt.com/trigger/unlock_main_door/with/key/m1IxB-SkNNFv4ocbMjbrfJ0f_lLIPwLKRMGPesGG6xh';
+                // Esegui il webhook senza aprire una nuova pagina
+                fetch('https://maker.ifttt.com/trigger/unlock_main_door/with/key/m1IxB-SkNNFv4ocbMjbrfJ0f_lLIPwLKRMGPesGG6xh')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Errore nel sbloccare la porta.');
+                        }
+                    })
+                    .catch(error => {
+                        // Se c'è un errore nel fetch, lo mostriamo
+                        console.error('Errore nel fetch:', error);
+                    });
             } else {
                 // Messaggio di errore
                 statusElement.innerHTML = "PIN errato.<br>Incorrect PIN.";
