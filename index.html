@@ -1,0 +1,26 @@
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Accesso Serratura</title>
+</head>
+<body>
+    <h2>Inserisci il PIN per sbloccare</h2>
+    <form id="pinForm">
+        <input type="text" id="pin" placeholder="Inserisci PIN" required>
+        <button type="submit">Accedi</button>
+    </form>
+
+    <script>
+        document.getElementById('pinForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const pin = document.getElementById('pin').value;
+            if(pin === '1234') { // Cambia il PIN con quello che desideri
+                alert('PIN corretto! Sblocco serratura...');
+                // Invia il comando Webhook qui
+            } else {
+                alert('PIN errato');
+            }
+        });
+    </script>
+</body>
+</html>
