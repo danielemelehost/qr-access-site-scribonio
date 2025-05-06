@@ -73,8 +73,9 @@
             // Verifica che il PIN sia corretto
             if (pin === "1234") { // Modifica con il tuo PIN
                 fetch('https://maker.ifttt.com/trigger/unlock_main_door/with/key/m1IxB-SkNNFv4ocbMjbrfJ0f_lLIPwLKRMGPesGG6xh')
-                    .then(response => {
-                        if (response.ok) {
+                    .then(response => response.json()) // Assicurati di interpretare la risposta come JSON
+                    .then(data => {
+                        if (data && data.success) { // Assicurati che il dato restituito contenga il campo success
                             alert("Porta sbloccata!");
                         } else {
                             alert("Errore nel sbloccare la porta");
