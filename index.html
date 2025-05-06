@@ -26,12 +26,13 @@
             color: #333;
         }
         input[type="password"] {
-            width: 100%;
+            width: 80%;
             padding: 10px;
             margin-top: 10px;
             font-size: 18px;
             border: 1px solid #ddd;
             border-radius: 5px;
+            text-align: center;
         }
         button {
             width: 100%;
@@ -48,14 +49,14 @@
             background-color: #FF3B4D;
         }
         .logo {
-            width: 100px;
+            width: 120px;
             margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Airbnb_logo_2018.svg" alt="Airbnb Logo" class="logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Airbnb_logo_2018.svg" alt="Airbnb Logo" class="logo">
         <h2>Inserisci il PIN per sbloccare la porta</h2>
         <form id="unlockForm">
             <input type="password" id="pin" name="pin" maxlength="4" required placeholder="PIN a 4 cifre">
@@ -71,12 +72,15 @@
             // Verifica che il PIN sia corretto
             if (pin === "1234") { // Modifica con il tuo PIN
                 fetch('https://maker.ifttt.com/trigger/unlock_main_door/with/key/m1IxB-SkNNFv4ocbMjbrfJ0f_lLIPwLKRMGPesGG6xh')
-                    .then(response => response.json())
-                    .then(data => {
-                        alert("Porta sbloccata!");
+                    .then(response => {
+                        if (response.ok) {
+                            alert("Porta sbloccata!");
+                        } else {
+                            alert("Errore nel sbloccare la porta");
+                        }
                     })
                     .catch(error => {
-                        alert("Errore nel sbloccare la porta");
+                        alert("Errore nel sbloccare la porta: " + error);
                     });
             } else {
                 alert("PIN errato!");
