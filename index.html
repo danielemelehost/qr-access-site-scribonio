@@ -56,7 +56,7 @@
 </head>
 <body>
     <div class="container">
-        <!-- Nuovo logo Airbnb -->
+        <!-- Logo Airbnb -->
         <img src="https://www.theriver.asia/wp-content/uploads/2020/01/pngkey.com-airbnb-logo-png-605967.png" alt="Airbnb Logo" class="logo">
         <h2>Inserisci il PIN per sbloccare la porta</h2>
         <form id="unlockForm">
@@ -72,10 +72,12 @@
 
             // Verifica che il PIN sia corretto
             if (pin === "1234") { // Modifica con il tuo PIN
+                alert("Sto aprendo la porta...");
+
                 fetch('https://maker.ifttt.com/trigger/unlock_main_door/with/key/m1IxB-SkNNFv4ocbMjbrfJ0f_lLIPwLKRMGPesGG6xh')
                     .then(response => response.json()) // Assicurati di interpretare la risposta come JSON
                     .then(data => {
-                        if (data && data.success) { // Assicurati che il dato restituito contenga il campo success
+                        if (data && data.success) { // Assicurati che la risposta contenga un campo di successo
                             alert("Porta sbloccata!");
                         } else {
                             alert("Errore nel sbloccare la porta");
