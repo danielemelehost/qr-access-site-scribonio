@@ -3,108 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sblocca la Porta</title>
+    <title>Sblocco Porta</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
         }
-
         .container {
-            background-color: #ffffff;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            border-radius: 8px;
-            width: 100%;
-            max-width: 400px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 300px;
             text-align: center;
         }
-
-        h1 {
+        h2 {
             color: #333;
-            font-size: 2em;
-            margin-bottom: 20px;
         }
-
-        label {
-            font-size: 1.2em;
-            color: #555;
-            display: block;
-            margin-bottom: 10px;
-        }
-
         input[type="password"] {
             width: 100%;
             padding: 10px;
-            font-size: 1.2em;
-            border: 2px solid #ddd;
+            margin-top: 10px;
+            font-size: 18px;
+            border: 1px solid #ddd;
             border-radius: 5px;
-            margin-bottom: 20px;
         }
-
-        input[type="submit"] {
+        button {
             width: 100%;
             padding: 10px;
-            font-size: 1.2em;
-            border: none;
-            background-color: #4CAF50;
+            margin-top: 20px;
+            background-color: #FF5A5F;
             color: white;
+            font-size: 16px;
+            border: none;
             border-radius: 5px;
             cursor: pointer;
         }
-
-        input[type="submit"]:hover {
-            background-color: #45a049;
+        button:hover {
+            background-color: #FF3B4D;
         }
-
-        .error {
-            color: red;
-            font-size: 1.1em;
-            margin-top: 10px;
+        .logo {
+            width: 100px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <h1>Sblocca la Porta</h1>
-        <form id="unlock-form">
-            <label for="pin">Inserisci il PIN per sbloccare la porta:</label>
-            <input type="password" id="pin" name="pin" placeholder="PIN a 4 cifre" required>
-            <input type="submit" value="Sblocca">
-            <div class="error" id="error-message" style="display:none;">PIN errato. Riprova.</div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Airbnb_logo_2018.svg" alt="Airbnb Logo" class="logo">
+        <h2>Inserisci il PIN per sbloccare la porta</h2>
+        <form id="unlockForm">
+            <input type="password" id="pin" name="pin" maxlength="4" required placeholder="PIN a 4 cifre">
+            <button type="submit">Sblocca</button>
         </form>
     </div>
 
     <script>
-        const form = document.getElementById('unlock-form');
-        form.addEventListener('submit', function(e) {
+        document.getElementById('unlockForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const pin = document.getElementById('pin').value;
 
-            // Verifica PIN
-            if (pin === '1234') { // Cambia con il PIN reale
-                fetch('https://maker.ifttt.com/trigger/unlock_main_door/with/key/m1IxB-SkNNFv4ocbMjbrfJ0f_lLIPwLKRMGPesGG6xh', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ value1: pin })
-                })
-                .then(response => response.json())
-                .then(data => alert('Porta sbloccata con successo!'))
-                .catch(error => alert('Si è verificato un errore.'));
+            // Verifica che il PIN sia corretto
+            if (pin === "1234") { // Modifica con il tuo PIN
+                fetch('https://maker.ifttt.com/trigger/unlock_main_door/with/key/m1IxB-SkNNFv4ocbMjbrfJ0f_lLIPwLKRMGPesGG6xh')
+                    .then(response => response.json())
+                    .then(data => {
+                        alert("Porta sbloccata!");
+                    })
+                    .catch(error => {
+                        alert("Errore nel sbloccare la porta");
+                    });
             } else {
-                document.getElementById('error-message').style.display = 'block';
+                alert("PIN errato!");
             }
         });
     </script>
-
 </body>
 </html>
