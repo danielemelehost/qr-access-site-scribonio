@@ -71,7 +71,7 @@
         <img src="https://www.theriver.asia/wp-content/uploads/2020/01/pngkey.com-airbnb-logo-png-605967.png" alt="Airbnb Logo" class="logo">
         <h2>Inserisci il PIN per sbloccare la porta.<br><br>Enter the PIN to unlock the door.</h2>
         <form id="unlockForm">
-            <input type="password" id="pin" name="pin" maxlength="6" required placeholder="PIN a 6 cifre / 6-digit PIN">
+            <input type="password" id="pin" name="pin" maxlength="7" required placeholder="PIN a 7 cifre / 7-digit PIN">
             <button type="submit">Sblocca / Unlock</button>
         </form>
         <div id="status" class="status"></div>
@@ -92,7 +92,7 @@
             const statusElement = document.getElementById('status');
 
             // Verifica che il PIN sia corretto
-            if (pin === "961924") { // QUI IL PIN DA MODIFICARE PER OGNI OSPITE
+            if (pin === "9619245") { // QUI IL PIN DA MODIFICARE PER OGNI OSPITE
                 // Messaggio di successo
                 statusElement.innerHTML = "Sto aprendo la porta, solo un attimo...<br>Unlocking the door, wait a moment...";
                 statusElement.classList.remove("error");
