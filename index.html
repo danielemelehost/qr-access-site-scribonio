@@ -78,42 +78,36 @@
     </div>
 
     <script>
-        let isRequestSent = false; // Flag to track if request has already been sent
+        let isRequestSent = false;
+        let correctPin = "";
+
+        // Carica il PIN dal file pin.json
+        fetch('pin.json')
+            .then(response => response.json())
+            .then(data => {
+                correctPin = data.pin;
+            })
+            .catch(error => {
+                console.error('Errore nel caricamento del PIN:', error);
+                document.getElementById('status').innerHTML = "Errore nel caricamento del PIN.<br>Error loading PIN.";
+            });
 
         document.getElementById('unlockForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            // Check if the request has already been sent
-            if (isRequestSent) {
-                return;
-            }
+            if (isRequestSent) return;
 
             const pin = document.getElementById('pin').value;
             const statusElement = document.getElementById('status');
 
-            // Verifica che il PIN sia corretto
-            if (pin === "9619245") { // QUI IL PIN DA MODIFICARE PER OGNI OSPITE
-                // Messaggio di successo
+            if (pin === correctPin) {
                 statusElement.innerHTML = "Sto aprendo la porta, solo un attimo...<br>Unlocking the door, wait a moment...";
                 statusElement.classList.remove("error");
                 statusElement.classList.add("success");
 
-                // Esegui il webhook senza aprire una nuova pagina
-                fetch('https://maker.ifttt.com/trigger/unlock_main_door/with/key/m1IxB-SkNNFv4ocbMjbrfJ0f_lLIPwLKRMGPesGG6xh')
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Errore nel sbloccare la porta.');
-                        }
-                    })
-                    .catch(error => {
-                        // Se c'è un errore nel fetch, lo mostriamo
-                        console.error('Errore nel fetch:', error);
-                    });
-
-                // Set the flag to prevent another request
+                fetch('https://maker.ifttt.com/trigger/unlock_main_door/with/key/m1IxB-SkNNFv4ocbMjbrfJ0f_lLIPwLKRMGPesGG6xh');
                 isRequestSent = true;
             } else {
-                // Messaggio di errore
                 statusElement.innerHTML = "PIN errato.<br>Incorrect PIN.";
                 statusElement.classList.remove("success");
                 statusElement.classList.add("error");
